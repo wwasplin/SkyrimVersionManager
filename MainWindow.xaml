@@ -1,0 +1,167 @@
+<Window x:Class="SkyrimVersionManager.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Skyrim Version Manager"
+        Icon="icon.ico"
+        Width="780" Height="760" MinWidth="660" MinHeight="580"
+        Background="{StaticResource BgBrush}"
+        WindowStartupLocation="CenterScreen">
+    <Grid Margin="16">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>  <!-- game dir -->
+            <RowDefinition Height="Auto"/>  <!-- versions -->
+            <RowDefinition Height="Auto"/>  <!-- status banner -->
+            <RowDefinition Height="Auto"/>  <!-- options -->
+            <RowDefinition Height="Auto"/>  <!-- actions -->
+            <RowDefinition Height="Auto"/>  <!-- interaction panels -->
+            <RowDefinition Height="*"/>     <!-- log -->
+        </Grid.RowDefinitions>
+
+        <!-- Game directory -->
+        <Border Grid.Row="0" Background="{StaticResource PanelBrush}" BorderBrush="{StaticResource BorderBrush2}"
+                BorderThickness="1" CornerRadius="6" Padding="12" Margin="0,0,0,10">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <TextBlock Grid.Row="0" Grid.ColumnSpan="3" Text="Skyrim Special Edition folder" FontWeight="SemiBold" Margin="0,0,0,6"/>
+                <TextBox x:Name="GamePathBox" Grid.Row="1" Grid.Column="0" Margin="0,0,8,0" Padding="6,4"
+                         TextChanged="GamePathBox_TextChanged"/>
+                <Button x:Name="DetectBtn" Grid.Row="1" Grid.Column="1" Content="Auto-detect" Click="DetectBtn_Click"/>
+                <Button x:Name="BrowseBtn" Grid.Row="1" Grid.Column="2" Content="Browse..." Margin="0" Click="BrowseBtn_Click"/>
+            </Grid>
+        </Border>
+
+        <!-- Version selection -->
+        <Border Grid.Row="1" Background="{StaticResource PanelBrush}" BorderBrush="{StaticResource BorderBrush2}"
+                BorderThickness="1" CornerRadius="6" Padding="12" Margin="0,0,0,10">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <StackPanel Grid.Column="0" Margin="0,0,12,0">
+                    <TextBlock Text="Installed version" FontWeight="SemiBold" Margin="0,0,0,6"/>
+                    <TextBlock x:Name="InstalledVersionText" Text="-" FontSize="18"/>
+                    <TextBlock x:Name="SkseVersionText" Text="" Foreground="{StaticResource MutedBrush}" Margin="0,4,0,0"/>
+                </StackPanel>
+                <StackPanel Grid.Column="1">
+                    <TextBlock Text="Desired version" FontWeight="SemiBold" Margin="0,0,0,6"/>
+                    <ComboBox x:Name="VersionCombo" SelectionChanged="VersionCombo_SelectionChanged"/>
+                    <TextBlock x:Name="VersionNotesText" Text="" Foreground="{StaticResource MutedBrush}"
+                               TextWrapping="Wrap" Margin="0,6,0,0"/>
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <!-- Status banner -->
+        <Border x:Name="StatusBanner" Grid.Row="2" Background="#2A2D36" BorderBrush="{StaticResource BorderBrush2}"
+                BorderThickness="1" CornerRadius="6" Padding="12" Margin="0,0,0,10">
+            <TextBlock x:Name="StatusText" Text="Detecting..." TextWrapping="Wrap" FontSize="14"/>
+        </Border>
+
+        <!-- Options -->
+        <Border Grid.Row="3" Background="{StaticResource PanelBrush}" BorderBrush="{StaticResource BorderBrush2}"
+                BorderThickness="1" CornerRadius="6" Padding="12" Margin="0,0,0,10">
+            <StackPanel>
+                <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
+                    <TextBlock Text="Scope:" FontWeight="SemiBold" Margin="0,0,12,0" VerticalAlignment="Center"/>
+                    <RadioButton x:Name="ExeOnlyRadio" GroupName="Scope" Content="Executables only (~small, fixes SKSE)" IsChecked="True" Checked="Option_Changed"/>
+                    <RadioButton x:Name="FullGameRadio" GroupName="Scope" Content="Full game (~12 GB, exact clean version)" Checked="Option_Changed"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
+                    <TextBlock Text="Steam access:" FontWeight="SemiBold" Margin="0,0,12,0" VerticalAlignment="Center"/>
+                    <RadioButton x:Name="ConsoleAuthRadio" GroupName="Auth" Content="Desktop Steam client (no password needed)" IsChecked="True" Checked="Option_Changed"/>
+                    <RadioButton x:Name="AccountAuthRadio" GroupName="Auth" Content="Steam account login" Checked="Option_Changed"/>
+                </StackPanel>
+                <StackPanel x:Name="AccountPanel" Orientation="Horizontal" Margin="0,0,0,6" Visibility="Collapsed">
+                    <TextBlock Text="Username:" VerticalAlignment="Center" Margin="0,0,6,0"/>
+                    <TextBox x:Name="UsernameBox" Width="150" Padding="4,3" Margin="0,0,12,0" TextChanged="UsernameBox_TextChanged"/>
+                    <TextBlock Text="Password:" VerticalAlignment="Center" Margin="0,0,6,0"/>
+                    <PasswordBox x:Name="SteamPasswordBox" Width="150" Padding="4,3"
+                                 Background="{StaticResource FieldBrush}" Foreground="{StaticResource FgBrush}"
+                                 BorderBrush="{StaticResource BorderBrush2}" CaretBrush="{StaticResource FgBrush}"/>
+                    <Button x:Name="LoginBtn" Content="Log in" Margin="8,0,0,0" Padding="10,4" Click="LoginBtn_Click"/>
+                    <TextBlock Text="(sent only to Steam, never stored; one-time)"
+                               Foreground="{StaticResource MutedBrush}" VerticalAlignment="Center" Margin="8,0,0,0"/>
+                </StackPanel>
+                <WrapPanel>
+                    <CheckBox x:Name="LockUpdatesCheck" Content="Lock Steam updates after switch" IsChecked="True" Click="Option_Changed"/>
+                    <CheckBox x:Name="BackupCheck" Content="Back up current files first" IsChecked="True" Click="Option_Changed"/>
+                    <CheckBox x:Name="SkseCheckBox" Content="Warn on SKSE mismatch" IsChecked="True" Click="Option_Changed"/>
+                    <CheckBox x:Name="ManageSavesCheck" Content="Manage saves with game version" IsChecked="True" Click="Option_Changed"/>
+                </WrapPanel>
+            </StackPanel>
+        </Border>
+
+        <!-- Actions -->
+        <Grid Grid.Row="4" Margin="0,0,0,10">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <Button x:Name="ApplyBtn" Grid.Column="0" Content="Apply version" FontWeight="SemiBold"
+                    Background="{StaticResource AccentBrush}" Foreground="#10121A" Click="ApplyBtn_Click"/>
+            <Button x:Name="CancelBtn" Grid.Column="1" Content="Cancel" IsEnabled="False" Click="CancelBtn_Click"/>
+            <ProgressBar x:Name="Progress" Grid.Column="2" Height="10" Margin="8,0" VerticalAlignment="Center"
+                         Minimum="0" Maximum="100"/>
+            <Button x:Name="UnlockBtn" Grid.Column="3" Content="Unlock Steam updates" Click="UnlockBtn_Click"/>
+            <Button x:Name="StorageBtn" Grid.Column="4" Content="Manage storage..." Click="StorageBtn_Click"/>
+            <Button x:Name="OpenDataBtn" Grid.Column="5" Content="Open data folder" Margin="0" Click="OpenDataBtn_Click"/>
+        </Grid>
+
+        <!-- Interaction panels (shown only while needed) -->
+        <StackPanel Grid.Row="5">
+            <!-- Steam console guidance -->
+            <Border x:Name="ConsolePanel" Visibility="Collapsed" Background="{StaticResource PanelBrush}"
+                    BorderBrush="{StaticResource AccentBrush}" BorderThickness="1" CornerRadius="6" Padding="12" Margin="0,0,0,10">
+                <StackPanel>
+                    <TextBlock TextWrapping="Wrap"
+                               Text="The Steam console has been opened in your desktop Steam client and the download command(s) below are already in your clipboard. Click inside the Steam console, paste (Ctrl+V), and press Enter. This app will detect when Steam finishes and continue automatically."/>
+                    <TextBox x:Name="ConsoleCommandsBox" IsReadOnly="True" FontFamily="Consolas" FontSize="12"
+                             Margin="0,8,0,0" Padding="6,4" TextWrapping="Wrap"/>
+                    <StackPanel Orientation="Horizontal" Margin="0,8,0,0">
+                        <Button Content="Copy commands again" Click="CopyCommandsBtn_Click"/>
+                        <Button Content="Reopen Steam console" Click="ReopenConsoleBtn_Click"/>
+                    </StackPanel>
+                </StackPanel>
+            </Border>
+
+            <!-- Steam Guard / login input -->
+            <Border x:Name="AuthPromptPanel" Visibility="Collapsed" Background="{StaticResource PanelBrush}"
+                    BorderBrush="{StaticResource AccentBrush}" BorderThickness="1" CornerRadius="6" Padding="12" Margin="0,0,0,10">
+                <StackPanel>
+                    <TextBlock x:Name="AuthPromptText" TextWrapping="Wrap" Text="Steam needs additional input."/>
+                    <StackPanel Orientation="Horizontal" Margin="0,8,0,0">
+                        <TextBox x:Name="AuthCodeBox" Width="220" Padding="4,3" Margin="0,0,8,0"
+                                 KeyDown="AuthInput_KeyDown"/>
+                        <PasswordBox x:Name="AuthPwBox" Width="220" Padding="4,3" Margin="0,0,8,0" Visibility="Collapsed"
+                                     Background="{StaticResource FieldBrush}" Foreground="{StaticResource FgBrush}"
+                                     BorderBrush="{StaticResource BorderBrush2}" CaretBrush="{StaticResource FgBrush}"
+                                     KeyDown="AuthInput_KeyDown"/>
+                        <Button Content="Submit" Click="AuthOkBtn_Click"/>
+                        <Button Content="Abort login" Margin="0" Click="AuthCancelBtn_Click"/>
+                    </StackPanel>
+                </StackPanel>
+            </Border>
+        </StackPanel>
+
+        <!-- Log -->
+        <Border Grid.Row="6" Background="#14161C" BorderBrush="{StaticResource BorderBrush2}"
+                BorderThickness="1" CornerRadius="6" Padding="4">
+            <TextBox x:Name="LogBox" IsReadOnly="True" Background="Transparent" Foreground="#B7BDC9"
+                     BorderThickness="0" FontFamily="Consolas" FontSize="12"
+                     VerticalScrollBarVisibility="Auto" TextWrapping="Wrap"/>
+        </Border>
+    </Grid>
+</Window>

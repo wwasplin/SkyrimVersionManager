@@ -1,0 +1,61 @@
+<Window x:Class="SkyrimVersionManager.PreflightWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Pre-flight checks"
+        Icon="icon.ico"
+        Width="640" Height="460" MinWidth="520" MinHeight="340"
+        Background="{StaticResource BgBrush}"
+        WindowStartupLocation="CenterOwner">
+    <Grid Margin="16">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <TextBlock x:Name="HeaderText" Grid.Row="0" TextWrapping="Wrap" Margin="0,0,0,10" FontSize="14"
+                   Text="The following was found before switching versions:"/>
+
+        <Border Grid.Row="1" Background="{StaticResource PanelBrush}" BorderBrush="{StaticResource BorderBrush2}"
+                BorderThickness="1" CornerRadius="6" Padding="4">
+            <ScrollViewer VerticalScrollBarVisibility="Auto">
+                <ItemsControl x:Name="IssuesList">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Border BorderBrush="{StaticResource BorderBrush2}" BorderThickness="0,0,0,1" Padding="8,8">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Border Grid.Column="0" Background="{Binding ChipBrush}" CornerRadius="3"
+                                            Padding="6,2" Margin="0,2,10,0" VerticalAlignment="Top">
+                                        <TextBlock Text="{Binding ChipText}" FontSize="11" FontWeight="SemiBold" Foreground="#10121A"/>
+                                    </Border>
+                                    <StackPanel Grid.Column="1">
+                                        <TextBlock Text="{Binding Title}" FontWeight="SemiBold" TextWrapping="Wrap"/>
+                                        <TextBlock Text="{Binding Detail}" Foreground="{StaticResource MutedBrush}"
+                                                   TextWrapping="Wrap" Margin="0,3,0,0"/>
+                                    </StackPanel>
+                                </Grid>
+                            </Border>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </ScrollViewer>
+        </Border>
+
+        <Grid Grid.Row="2" Margin="0,10,0,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <CheckBox x:Name="AckCheck" Grid.Column="0" VerticalAlignment="Center" Visibility="Collapsed"
+                      Content="I understand the risks above - proceed anyway" Click="AckCheck_Click"/>
+            <Button x:Name="ProceedBtn" Grid.Column="1" Content="Proceed" FontWeight="SemiBold"
+                    Background="{StaticResource AccentBrush}" Foreground="#10121A" Click="ProceedBtn_Click"/>
+            <Button Grid.Column="2" Content="Cancel" Margin="0" Click="CancelBtn_Click"/>
+        </Grid>
+    </Grid>
+</Window>
