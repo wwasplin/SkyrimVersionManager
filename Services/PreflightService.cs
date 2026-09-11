@@ -35,6 +35,19 @@ public static class PreflightService
         bool downgrading = VersionMath.Compare(installedVersion, target.Version) > 0;
         var dataDir = Path.Combine(gameDir, "Data");
 
+        // --- Fresh install that Steam hasn't finished setting up ---------------------------
+        var firstRun = FirstRunService.PendingFirstRunMarkers(gameDir);
+        if (firstRun.Count > 0)
+        {
+            issues.Add(new PreflightIssue(PreflightSeverity.Blocker,
+                "The game has not been launched since Steam installed it",
+                "Steam finishes a fresh install on the first Play: it runs the install script, registers the " +
+                "game, and the launcher downloads the Anniversary Edition creations. Switching versions or " +
+                "locking updates before that leaves Steam with a half-registered install it may try to repair " +
+                "or re-download. Launch Skyrim once from Steam, reach the main menu, quit, then come back. " +
+                "Detected: " + string.Join("; ", firstRun) + "."));
+        }
+
         // --- Era jump: DLL mods + saves are era-specific ---------------------------------
         var eraFrom = VersionMath.Era(installedVersion);
         var eraTo = VersionMath.Era(target.Version);

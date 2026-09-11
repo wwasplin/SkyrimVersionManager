@@ -23,8 +23,14 @@ SKSE-based mods keep working. One exe, no installation; delete its data folder a
 [*]Downloads exact old versions [b]from Steam itself[/b] using your own Steam account's ownership of the game. [b]No game files are distributed with this tool.[/b]
 [*]Caches downloads locally, so switching back and forth never re-downloads.
 [*]Backs up the files it replaces, locks Steam updates so the downgrade sticks, warns on SKSE mismatches, and keeps each version's save games separate so a newer save is never loaded by an older exe.
-[*]Pre-flight checks catch the dangerous cases before anything is touched (1.71-header plugins on old executables, era changes that break DLL mods, stranded saves).
+[*]Pre-flight checks catch the dangerous cases before anything is touched (a fresh install Steam hasn't finished setting up, 1.71-header plugins on old executables, era changes that break DLL mods, stranded saves).
 [/list]
+
+[size=3][b]Before first use[/b][/size]
+After a [b]fresh install[/b], launch Skyrim once from Steam (reach the main menu, quit) before
+using this tool. Steam finishes the install on that first Play - install script, registry entry,
+Anniversary Edition creations download - and switching versions before that can leave Steam with
+a half-registered install it tries to repair. The tool detects this and warns you.
 
 [size=3][b]Steam access — no password needed[/b][/size]
 By default the tool uses your [b]already-logged-in desktop Steam client[/b]: it opens Steam's

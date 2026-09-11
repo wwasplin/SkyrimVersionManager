@@ -351,6 +351,14 @@ public partial class MainWindow : Window
             StatusText.Text += $"\nSKSE note: installed loader is {skse}, but {desired.Version} expects SKSE {desired.ExpectedSkse}. " +
                                "Update SKSE from skse.silverlock.org after switching or SKSE mods will not load.";
         }
+
+        // Surface this before Apply is ever clicked - the pre-flight blocker repeats it.
+        if (FirstRunService.PendingFirstRunMarkers(gameDir).Count > 0)
+        {
+            StatusText.Text += "\nFIRST RUN NEEDED: this install has never been launched from Steam. Launch Skyrim once " +
+                               "(Steam Play, reach the main menu, quit) before switching versions, or Steam may treat " +
+                               "the install as broken and repair or re-download it.";
+        }
     }
 
     private void SetStatus(string text, SolidColorBrush brush)

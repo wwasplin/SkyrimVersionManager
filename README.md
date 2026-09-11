@@ -61,6 +61,16 @@ anything else slips in). Never distribute anything from `publish\data` — it ho
 settings, stashed saves, and cached game depots, which are Bethesda's copyrighted files.
 `NEXUS_DESCRIPTION.md` contains a ready-to-paste Nexus page draft and a per-release checklist.
 
+## Before first use
+
+**Launch the game once from Steam after a fresh install** (reach the main menu, then quit).
+Steam finishes the install on that first Play — it runs the install script, registers the game in
+the registry, and the launcher downloads the Anniversary Edition creations. Switching versions or
+locking updates before that can leave Steam with a half-registered install that it tries to repair
+or re-download. The app detects an un-launched install (Steam's `LastPlayed` is 0, or the
+`Installed Path` registry entry is missing), shows a **FIRST RUN NEEDED** note in the status line,
+and blocks the switch in pre-flight until you acknowledge it.
+
 ## After switching versions
 
 - Launch the game via `skse64_loader.exe` (or your mod manager), **not** the Steam Play button —
@@ -70,10 +80,9 @@ settings, stashed saves, and cached game depots, which are Bethesda's copyrighte
 
 ## Notes / limitations
 
-- The 1.7.x versions only have their executable-depot manifest pinned in `versions.json` (their
-  core/asset manifests aren't published yet). *Executables only* switches download them
-  normally; a *Full game* switch to 1.7.99 needs a local full backup, and a full switch to the
-  current 1.7.104 takes whatever Steam serves for the other depots (or your backup, if one exists).
+- 1.7.99 only has its executable-depot manifest pinned in `versions.json` (its core/asset
+  manifests aren't published). *Executables only* switches download it normally; a *Full game*
+  switch to 1.7.99 needs a local full backup of it.
 - A *full game* downgrade covers the three main depots (489831/489832/489833). Anniversary
   Edition creation-club content downloaded in-game is not touched.
 - `versions.json` can be copied into the `data` folder and edited to add future versions (new

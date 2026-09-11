@@ -13,9 +13,11 @@
       "expectedSkse": "2.3.1",
       "isLatest": true,
       "manifests": {
+        "489831": "4940892828028256588",
+        "489832": "5728778377666085157",
         "489833": "4886117324142477814"
       },
-      "notes": "The current version on Steam. The executable is pinned to its manifest; a full-game switch takes whatever Steam currently serves for the other depots, or restores from a local backup if one exists."
+      "notes": "The current version on Steam. Restores from a local backup when one exists, otherwise downloads the pinned manifests."
     },
     {
       "version": "1.7.99",
