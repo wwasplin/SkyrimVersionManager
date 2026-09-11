@@ -1,8 +1,8 @@
 # Nexus mod page — draft description
 
 Copy the BBCode block below into the Nexus description editor. Before publishing, replace the
-two placeholders: `<GITHUB-URL>` (your public source repository) and `<VIRUSTOTAL-URL>`
-(scan of the exact uploaded zip — do this for every release).
+`<GITHUB-URL>` placeholder (your public source repository). The VirusTotal link must point at a
+scan of the exact uploaded zip — redo it for every release (v1.0.0: 0/67 detections).
 
 Suggested category: **Utilities**. Upload only `release\SkyrimVersionManager-vX.Y.Z.zip`
 produced by `build.ps1` — never anything from `publish\data`.
@@ -46,7 +46,7 @@ with that, simply stay on the default mode.
 [size=3][b]Transparency[/b][/size]
 [list]
 [*]Full source code: [url=<GITHUB-URL>]GitHub[/url] (MIT license)
-[*]VirusTotal scan of this exact upload: [url=<VIRUSTOTAL-URL>]VirusTotal[/url]
+[*]VirusTotal scan of this exact upload: [url=https://www.virustotal.com/gui/file/6f774747d19f77df77e971ffbf76df35c875611961e2dab7d8ff1e71fbb4cb83]VirusTotal[/url]
 [*]The exe is an unsigned self-contained .NET app, which SmartScreen may warn about on first run ("More info" → "Run anyway"). This is normal for unsigned indie tools; the source and scan above are the proof of what it does.
 [/list]
 
