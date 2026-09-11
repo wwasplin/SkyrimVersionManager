@@ -62,9 +62,17 @@ public class DowngradeService
         return File.Exists(marker) && File.ReadAllText(marker).Trim() == "full";
     }
 
-    /// <summary>Restoring the current Steam version from a local backup beats re-downloading it.</summary>
+    /// <summary>True when every depot in the scope has a pinned manifest, or Steam's current build can stand in.</summary>
+    public bool CanDownload(GameVersion target, bool fullGame) =>
+        target.IsLatest || _catalog.DepotsForScope(fullGame).All(d => target.ManifestFor(d) != null);
+
+    /// <summary>
+    /// Restoring the current Steam version from a local backup beats re-downloading it, and a
+    /// backup is the only source for a version whose manifests aren't all known.
+    /// </summary>
     public bool ShouldUseBackupAsSource(GameVersion target, bool fullGame) =>
-        target.IsLatest && HasBackup(target.Version, fullGame) && !IsCached(target, fullGame);
+        (target.IsLatest || !CanDownload(target, fullGame)) &&
+        HasBackup(target.Version, fullGame) && !IsCached(target, fullGame);
 
     /// <summary>Copies a finished Steam-console download into the cache and removes the transient content dir.</summary>
     public void CacheFromContentDir(GameVersion target, string depotId, string contentDepotDir, Action<string> log)

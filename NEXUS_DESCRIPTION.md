@@ -13,13 +13,13 @@ produced by `build.ps1` — never anything from `publish\data`.
 [size=4][b]Skyrim Version Manager[/b][/size]
 
 A standalone tool that switches your Steam install of Skyrim Special Edition between game
-versions — e.g. downgrading the August 2026 update 1.7.99 back to the mod-stable 1.6.1170 so
+versions — e.g. downgrading the August 2026 updates (1.7.99 / 1.7.104) back to the mod-stable 1.6.1170 so
 SKSE-based mods keep working. One exe, no installation; delete its data folder and it's gone.
 
 [size=3][b]What it does[/b][/size]
 [list]
 [*]Auto-detects your Skyrim install and its exact version, and tells you whether it matches the version you want.
-[*]One-click switch between every known Steam release: 1.5.97, 1.6.317 through 1.6.1170, and the current 1.7.99.
+[*]One-click switch between every known Steam release: 1.5.97, 1.6.317 through 1.6.1170, 1.7.99, and the current 1.7.104.
 [*]Downloads exact old versions [b]from Steam itself[/b] using your own Steam account's ownership of the game. [b]No game files are distributed with this tool.[/b]
 [*]Caches downloads locally, so switching back and forth never re-downloads.
 [*]Backs up the files it replaces, locks Steam updates so the downgrade sticks, warns on SKSE mismatches, and keeps each version's save games separate so a newer save is never loaded by an older exe.

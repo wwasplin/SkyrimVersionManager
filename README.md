@@ -1,7 +1,7 @@
 # Skyrim Version Manager
 
 A standalone Windows app that manages which version of **Skyrim Special Edition (Steam)** is
-installed — e.g. downgrading the August 2026 update **1.7.99** back to the mod-stable
+installed — e.g. downgrading the August 2026 updates (**1.7.99** / **1.7.104**) back to the mod-stable
 **1.6.1170** so SKSE-based mods keep working.
 
 No installation: it's a single `SkyrimVersionManager.exe`. All of its data (downloaded version
@@ -15,8 +15,8 @@ removes everything.
 - **Detects the installed version** on launch from `SkyrimSE.exe`'s version resource and compares
   it to your previously selected desired version, telling you whether they match and offering a
   one-click switch when they don't.
-- **Version dropdown** covering every known Steam release: 1.5.97, 1.6.317 through 1.6.1170, and
-  the current 1.7.99.
+- **Version dropdown** covering every known Steam release: 1.5.97, 1.6.317 through 1.6.1170,
+  1.7.99, and the current 1.7.104.
 - **Downloads exact old versions from Steam itself** using [DepotDownloader](https://github.com/SteamRE/DepotDownloader)
   (SteamRE, MIT license) with the community-verified depot manifest IDs. Downloads are **cached
   locally** in `data\cache`, so switching back and forth never re-downloads.
@@ -70,8 +70,10 @@ settings, stashed saves, and cached game depots, which are Bethesda's copyrighte
 
 ## Notes / limitations
 
-- Version 1.7.99 has no pinned manifests in `versions.json` (Steam always serves the newest
-  build for it). Returning to it uses your local backup when one exists.
+- The 1.7.x versions only have their executable-depot manifest pinned in `versions.json` (their
+  core/asset manifests aren't published yet). *Executables only* switches download them
+  normally; a *Full game* switch to 1.7.99 needs a local full backup, and a full switch to the
+  current 1.7.104 takes whatever Steam serves for the other depots (or your backup, if one exists).
 - A *full game* downgrade covers the three main depots (489831/489832/489833). Anniversary
   Edition creation-club content downloaded in-game is not touched.
 - `versions.json` can be copied into the `data` folder and edited to add future versions (new

@@ -324,10 +324,10 @@ public partial class MainWindow : Window
         }
 
         bool cached = _downgrade.IsCached(desired, _settings.FullGameScope);
-        bool backup = _downgrade.HasBackup(desired.Version, _settings.FullGameScope);
         string availability = cached ? " Files are cached locally - no download needed."
-                            : backup && desired.IsLatest ? " A local backup exists - no download needed."
-                            : " Files will be downloaded once, then cached for future switches.";
+                            : _downgrade.ShouldUseBackupAsSource(desired, _settings.FullGameScope) ? " A local backup exists - no download needed."
+                            : _downgrade.CanDownload(desired, _settings.FullGameScope) ? " Files will be downloaded once, then cached for future switches."
+                            : " Only the executable manifest is known for this version - use 'Executables only' (or restore it from a full backup).";
 
         if (_installedVersion == desired.Version)
         {
@@ -555,12 +555,14 @@ public partial class MainWindow : Window
         SteamPasswordBox.Password = "";
     }
 
+    /// <summary>Pinned manifest when known; null (= Steam's current build) only for the latest version.</summary>
     private string? GetManifest(GameVersion target, string depot)
     {
-        if (target.IsLatest) return null;
-        if (target.Manifests == null || !target.Manifests.TryGetValue(depot, out var manifest))
-            throw new InvalidOperationException($"No manifest known for depot {depot} of version {target.Version}.");
-        return manifest;
+        var manifest = target.ManifestFor(depot);
+        if (manifest != null || target.IsLatest) return manifest;
+        throw new InvalidOperationException(
+            $"No manifest is known for depot {depot} ({_downgrade.DepotLabel(depot)}) of version {target.Version}. " +
+            "Switch to 'Executables only', or add the manifest ID to data\\versions.json.");
     }
 
     private void SetBusy(bool busy)

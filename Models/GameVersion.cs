@@ -19,9 +19,16 @@ public class GameVersion
     [JsonPropertyName("isLatest")]
     public bool IsLatest { get; set; }
 
-    /// <summary>Depot id -> manifest id. Null for the "latest" entry (download whatever Steam serves).</summary>
+    /// <summary>
+    /// Depot id -> manifest id. May be null or partial; the "latest" entry falls back to whatever
+    /// Steam serves for any depot without a pinned manifest.
+    /// </summary>
     [JsonPropertyName("manifests")]
     public Dictionary<string, string>? Manifests { get; set; }
+
+    /// <summary>Pinned manifest for a depot, or null when none is known.</summary>
+    public string? ManifestFor(string depot) =>
+        Manifests != null && Manifests.TryGetValue(depot, out var manifest) ? manifest : null;
 
     [JsonPropertyName("notes")]
     public string Notes { get; set; } = "";
