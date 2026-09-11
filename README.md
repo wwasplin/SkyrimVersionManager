@@ -30,6 +30,12 @@ removes everything.
     read-only so Steam can't silently reinstall the newest patch. An **Unlock** button reverses it.
   - *SKSE check* — warns when the installed `skse64_loader.exe` doesn't match the SKSE version the
     selected game version expects.
+  - *Creations catalog fix* (always on) — builds from 1.7.99 write
+    `%LOCALAPPDATA%\Skyrim Special Edition\ContentCatalog.txt` with GUID entries that older
+    executables can't parse, so downloading Creations on 1.7.x and then rolling back to 1.6.1170
+    crashes ~30 s into startup. The app keeps one catalog per version era in `data\catalogs`,
+    restores the matching one on a switch, and otherwise sets an incompatible catalog aside (the
+    game rebuilds it; installed creations still load via `Skyrim.ccc`).
 
 ## Steam access (two methods, no mobile app required)
 

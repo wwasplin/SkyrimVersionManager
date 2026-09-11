@@ -66,6 +66,28 @@ public static class PreflightService
                 "SKSE itself also needs the matching era build."));
         }
 
+        // --- Creations catalog written by a newer build -----------------------------------
+        if (eraFrom != eraTo)
+        {
+            var catalog = CreationsCatalogService.LiveFile();
+            if (CreationsCatalogService.HasStash(target.Version))
+            {
+                issues.Add(new PreflightIssue(PreflightSeverity.Info,
+                    $"Creations catalog for {eraTo}.x will be restored",
+                    "ContentCatalog.txt (the game's record of Creations-menu downloads) is kept per version era. " +
+                    $"The current one is stashed and the copy from when {eraTo}.x last ran is put back."));
+            }
+            else if (CreationsCatalogService.IsIncompatible(catalog, target.Version))
+            {
+                issues.Add(new PreflightIssue(PreflightSeverity.Warning,
+                    $"Creations catalog from {eraFrom}.x would crash {target.Version} at startup",
+                    "Builds from 1.7.99 on write ContentCatalog.txt with GUID entries that older executables cannot " +
+                    "parse (crash to desktop ~30 s into loading). The file will be stashed and set aside; the game " +
+                    "rebuilds it on the next run and every installed creation still loads through Skyrim.ccc. " +
+                    "Only the Creations menu's download history is affected."));
+            }
+        }
+
         // --- New plugin format vs old executable (the dangerous one) ---------------------
         if (VersionMath.Compare(target.Version, NewHeaderIntroducedIn) < 0 && Directory.Exists(dataDir))
         {

@@ -455,6 +455,21 @@ public partial class MainWindow : Window
                     line => Dispatcher.Invoke(() => Log(line))));
             }
 
+            // Always on: a Creations catalog from a newer build crashes older executables.
+            if (_installedVersion != null && _installedVersion != target.Version)
+            {
+                try
+                {
+                    await Task.Run(() => CreationsCatalogService.Switch(_installedVersion!, target.Version,
+                        line => Dispatcher.Invoke(() => Log(line))));
+                }
+                catch (Exception ex)
+                {
+                    Log("WARNING: could not adjust the Creations catalog: " + ex.Message +
+                        " - if the game crashes ~30 s into startup, move %LOCALAPPDATA%\\Skyrim Special Edition\\ContentCatalog.txt aside.");
+                }
+            }
+
             if (!fullGame)
                 Log("Scope note: only the executable depot (489833, ~35 MB) was applied - that is what SKSE " +
                     "compatibility needs. Community guides list three download commands; the other two are the " +

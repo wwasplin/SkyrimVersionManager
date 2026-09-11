@@ -2,7 +2,7 @@
 
 Copy the BBCode block below into the Nexus description editor. The source link points at
 https://github.com/wwasplin/SkyrimVersionManager. The VirusTotal link must point at a scan of the
-exact uploaded zip — redo it for every release (v1.0.1: 0/67 detections).
+exact uploaded zip — redo it for every release (v1.0.2: 0/66 detections).
 
 Suggested category: **Utilities**. Upload only `release\SkyrimVersionManager-vX.Y.Z.zip`
 produced by `build.ps1` — never anything from `publish\data`.
@@ -23,6 +23,7 @@ SKSE-based mods keep working. One exe, no installation; delete its data folder a
 [*]Downloads exact old versions [b]from Steam itself[/b] using your own Steam account's ownership of the game. [b]No game files are distributed with this tool.[/b]
 [*]Caches downloads locally, so switching back and forth never re-downloads.
 [*]Backs up the files it replaces, locks Steam updates so the downgrade sticks, warns on SKSE mismatches, and keeps each version's save games separate so a newer save is never loaded by an older exe.
+[*]Fixes the Creations-catalog crash: downloading Creations on 1.7.x and rolling back to 1.6.1170 otherwise crashes ~30 s into startup (the newer build writes ContentCatalog.txt in a format old executables can't parse). The tool keeps a catalog per version era and swaps the right one in.
 [*]Pre-flight checks catch the dangerous cases before anything is touched (a fresh install Steam hasn't finished setting up, 1.71-header plugins on old executables, era changes that break DLL mods, stranded saves).
 [/list]
 
@@ -46,7 +47,7 @@ with that, simply stay on the default mode.
 [size=3][b]Transparency[/b][/size]
 [list]
 [*]Full source code: [url=https://github.com/wwasplin/SkyrimVersionManager]GitHub[/url] (MIT license)
-[*]VirusTotal scan of this exact upload: [url=https://www.virustotal.com/gui/file/bebb50e95a8a115887da19937e84bc732f1b9ba73018d7fbd5feb40bb4e0e533]VirusTotal[/url]
+[*]VirusTotal scan of this exact upload: [url=https://www.virustotal.com/gui/file/cbb0df9d8f436c848cf1b5aa41b7226a20619ec443e41a06c66959d7876d12bf]VirusTotal[/url]
 [*]The exe is an unsigned self-contained .NET app, which SmartScreen may warn about on first run ("More info" → "Run anyway"). This is normal for unsigned indie tools; the source and scan above are the proof of what it does.
 [*]This tool was made with AI assistance. The full source is on GitHub for anyone to review.
 [/list]
@@ -56,6 +57,7 @@ with that, simply stay on the default mode.
 [*]Your Skyrim Special Edition folder (the files being switched, backed up first by default)
 [*]The Steam appmanifest for Skyrim (to set "update only on launch" and mark it read-only — reversible via the Unlock button)
 [*]Documents\My Games\Skyrim Special Edition\Saves (only if "Manage saves with game version" is on; saves are moved, never deleted)
+[*]%LOCALAPPDATA%\Skyrim Special Edition\ContentCatalog.txt (stashed per version era when switching across 1.6/1.7, so an old executable never reads a new-format catalog)
 [*]A "data" folder next to the exe (settings, download cache, backups, log) — delete it to remove everything
 [/list]
 
