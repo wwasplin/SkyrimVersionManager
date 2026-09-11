@@ -98,6 +98,10 @@ and blocks the switch in pre-flight until you acknowledge it.
   suggests. Backups also record their scope: an executables-only backup is never used to
   "restore" a full-game version.
 
+## Development
+
+This tool was made with AI assistance. The full source is in this repository for anyone to review.
+
 ## License
 
 MIT — see [LICENSE](LICENSE). Uses [DepotDownloader](https://github.com/SteamRE/DepotDownloader)
