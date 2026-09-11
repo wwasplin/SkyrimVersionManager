@@ -48,6 +48,7 @@ with that, simply stay on the default mode.
 [*]Full source code: [url=https://github.com/wwasplin/SkyrimVersionManager]GitHub[/url] (MIT license)
 [*]VirusTotal scan of this exact upload: [url=https://www.virustotal.com/gui/file/6f774747d19f77df77e971ffbf76df35c875611961e2dab7d8ff1e71fbb4cb83]VirusTotal[/url]
 [*]The exe is an unsigned self-contained .NET app, which SmartScreen may warn about on first run ("More info" → "Run anyway"). This is normal for unsigned indie tools; the source and scan above are the proof of what it does.
+[*]This tool was made with AI assistance (Claude by Anthropic). The full source is on GitHub for anyone to review.
 [/list]
 
 [size=3][b]What it touches on your PC[/b][/size]
